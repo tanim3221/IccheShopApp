@@ -1,0 +1,211 @@
+<html>
+<head>
+<title>WebviewActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #000080; font-weight: bold;}
+.s1 { color: #000000;}
+.s2 { color: #008000; font-weight: bold;}
+.s3 { color: #0000ff;}
+.s4 { color: #808080; font-style: italic;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+WebviewActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span>com.icche.shop;
+
+<span class="s0">import </span>android.annotation.SuppressLint;
+<span class="s0">import </span>android.content.Context;
+<span class="s0">import </span>android.content.Intent;
+<span class="s0">import </span>android.graphics.Bitmap;
+<span class="s0">import </span>android.net.ConnectivityManager;
+<span class="s0">import </span>android.net.NetworkInfo;
+<span class="s0">import </span>android.net.Uri;
+<span class="s0">import </span>android.os.Bundle;
+<span class="s0">import </span>android.view.KeyEvent;
+<span class="s0">import </span>android.view.Menu;
+<span class="s0">import </span>android.view.View;
+<span class="s0">import </span>android.webkit.WebChromeClient;
+<span class="s0">import </span>android.webkit.WebSettings;
+<span class="s0">import </span>android.webkit.WebView;
+<span class="s0">import </span>android.webkit.WebViewClient;
+<span class="s0">import </span>android.widget.ProgressBar;
+<span class="s0">import </span>android.widget.Toast;
+
+<span class="s0">import </span>androidx.appcompat.app.AppCompatActivity;
+<span class="s0">import </span>androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+<span class="s0">public class </span>WebviewActivity <span class="s0">extends </span>AppCompatActivity {
+
+    <span class="s0">public static boolean </span>isNetworkStatusAvialable(Context context) {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        <span class="s0">if </span>(connectivityManager != <span class="s0">null</span>) {
+            NetworkInfo netInfos = connectivityManager.getActiveNetworkInfo();
+            <span class="s0">if </span>(netInfos != <span class="s0">null</span>)
+                <span class="s0">return </span>netInfos.isConnected();
+        }
+        <span class="s0">return false</span>;
+    }
+
+
+    <span class="s0">private </span>ProgressBar progressBar;
+    <span class="s0">private </span>WebView webView;
+    <span class="s0">private </span>SwipeRefreshLayout mySwipeRefreshLayout;
+    <span class="s0">private boolean </span>mShouldPause;
+
+    @SuppressLint(<span class="s2">&quot;SetJavaScriptEnabled&quot;</span>)
+    @Override
+    <span class="s0">public void </span>onCreate(Bundle savedInstanceState) {
+
+        <span class="s0">super</span>.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_webview);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setMax(<span class="s3">100</span>);
+        webView = (WebView) findViewById(R.id.webView);
+        WebSettings webSettings = webView.getSettings();
+        webView.getSettings().setSupportZoom(<span class="s0">false</span>);
+        webView.getSettings().setBuiltInZoomControls(<span class="s0">false</span>);
+        webView.getSettings().setDisplayZoomControls(<span class="s0">false</span>);
+        webView.getSettings().setLoadWithOverviewMode(<span class="s0">true</span>);
+        webView.getSettings().setUseWideViewPort(<span class="s0">true</span>);
+        webView.getSettings().setJavaScriptEnabled(<span class="s0">true</span>);
+        webView.getSettings().setAppCacheMaxSize(<span class="s3">10 </span>* <span class="s3">1024 </span>* <span class="s3">1024</span>);
+        webView.getSettings().setAppCachePath(getApplicationContext().getCacheDir().getAbsolutePath());
+        webView.getSettings().setAllowFileAccess(<span class="s0">true</span>);
+        webView.getSettings().setAppCacheEnabled(<span class="s0">true</span>);
+        webView.setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webView.setScrollbarFadingEnabled(<span class="s0">true</span>);
+        <span class="s0">if </span>(isNetworkStatusAvialable(getApplicationContext())) {
+            webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+        } <span class="s0">else </span>{
+            webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+        }
+        webView.setWebViewClient(<span class="s0">new </span>WebViewClientDemo());
+        webView.setWebChromeClient(<span class="s0">new </span>WebChromeClientDemo());
+        mySwipeRefreshLayout = (SwipeRefreshLayout) <span class="s0">this</span>.findViewById(R.id.swipe);
+
+        mySwipeRefreshLayout.setOnRefreshListener(
+                <span class="s0">new </span>SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    <span class="s0">public void </span>onRefresh() {
+                        webView.reload();
+                        mySwipeRefreshLayout.setRefreshing(<span class="s0">false</span>);
+                    }
+                }
+        );
+        <span class="s4">// call your method here to manage the intent</span>
+        manageIntent(getIntent());
+    }
+
+    <span class="s4">/* Simply moved your code which handles the intent to a common method 
+     * Call this method from onCreate so that when first instance of activity gets created it handles it 
+     * Similarly call it from onNewIntent to manage the new link you get 
+     * You just need to pass the respective intents from the methods 
+     */</span>
+    <span class="s0">public void </span>manageIntent(Intent intent) {
+        <span class="s4">// ATTENTION: This was auto-generated to handle app links.</span>
+        Intent appLinkIntent = intent;
+        String appLinkAction = appLinkIntent.getAction();
+        Uri appLinkData = appLinkIntent.getData();
+
+        <span class="s0">if </span>(getIntent().getExtras() != <span class="s0">null</span>) {
+            <span class="s0">if </span>(appLinkData == <span class="s0">null</span>){
+                webView.loadUrl(<span class="s2">&quot;http://192.168.43.223/eco/7/eCommerce/home/&quot;</span>);
+            }<span class="s0">else</span>
+                webView.loadUrl(String.valueOf(appLinkData));
+
+        } <span class="s0">else if </span>(getIntent().getExtras() == <span class="s0">null</span>){
+            webView.loadUrl(<span class="s2">&quot;http://192.168.43.223/eco/7/eCommerce/home/&quot;</span>);
+
+        }
+    }
+
+    <span class="s4">// override to get the new intent when this activity has an instance already running</span>
+    @Override
+    <span class="s0">protected void </span>onNewIntent(Intent intent) {
+        <span class="s0">super</span>.onNewIntent(intent);
+        <span class="s4">// again call the same method here with the new intent received</span>
+        manageIntent(intent);
+    }
+
+    <span class="s0">private class </span>WebViewClientDemo <span class="s0">extends </span>WebViewClient {
+
+        @Override
+        <span class="s0">public void </span>onReceivedError(WebView view, <span class="s0">int </span>errorCode, String description, String failingUrl) {
+            <span class="s0">super</span>.onReceivedError(view, errorCode, description, failingUrl);
+            <span class="s4">//Toast.error(getApplicationContext(), &quot;No Internet, pull down to refresh when you're connected to internet&quot;, Toast.LENGTH_LONG, true).show();</span>
+        }
+
+
+        @Override
+        <span class="s0">public boolean </span>shouldOverrideUrlLoading(WebView view, String url) {
+            Uri uri = Uri.parse(url);
+            <span class="s0">if </span>(uri.getHost() != <span class="s0">null </span>&amp;&amp; (url.startsWith(<span class="s2">&quot;http://192.168.43.223/eco/7/eCommerce/home/&quot;</span>) || url.startsWith(<span class="s2">&quot;http://192.168.43.223/eco/7/eCommerce/home/&quot;</span>))) {
+                <span class="s0">return false</span>;
+            }
+
+            Intent intent = <span class="s0">new </span>Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            view.getContext().startActivity(intent);
+            <span class="s0">return true</span>;
+        }
+        @Override
+        <span class="s0">public void </span>onPageFinished(WebView view, String url) {
+            <span class="s0">super</span>.onPageFinished(view, url);
+            progressBar.setVisibility(View.GONE);
+            progressBar.setProgress(<span class="s3">100</span>);
+        }
+
+        @Override
+        <span class="s0">public void </span>onPageStarted(WebView view, String url, Bitmap favicon) {
+            <span class="s0">super</span>.onPageStarted(view, url, favicon);
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(<span class="s3">0</span>);
+        }
+    }
+
+
+    <span class="s0">private class </span>WebChromeClientDemo <span class="s0">extends </span>WebChromeClient {
+
+        <span class="s0">public void </span>onProgressChanged(WebView view, <span class="s0">int </span>progress) {
+            progressBar.setProgress(progress);
+        }
+    }
+    @Override
+    <span class="s0">public boolean </span>onKeyDown(<span class="s0">int </span>keyCode, KeyEvent event) {
+        <span class="s0">if </span>((keyCode == KeyEvent.KEYCODE_BACK) &amp;&amp; webView.canGoBack()) {
+            webView.goBack();
+            <span class="s0">return true</span>;
+        }
+        <span class="s0">else </span>{
+        }
+        <span class="s0">return super</span>.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    <span class="s0">public boolean </span>onCreateOptionsMenu(Menu menu) {
+        <span class="s0">return true</span>;
+    }
+
+    @Override
+    <span class="s4">// This method is used to detect back button</span>
+    <span class="s0">public void </span>onBackPressed() {
+        <span class="s0">if </span>(<span class="s0">this</span>.webView.canGoBack()) {
+            <span class="s0">this</span>.webView.goBack();
+            <span class="s0">return</span>;
+        }
+
+        <span class="s0">else </span>{
+            <span class="s4">// Let the system handle the back button</span>
+            <span class="s0">super</span>.onBackPressed();
+        }
+    }
+
+}</pre>
+</body>
+</html>

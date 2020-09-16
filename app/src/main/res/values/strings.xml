@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Icche Shop</string>
+    <string name="call_toast">Call app opening</string>
+    <string name="email_toast">Email app opening</string>
+    <string name="facebook_view">Facebook Profile opening</string>
+    <string name="not_fb"> Facebook app not installed </string>
+    <string name="connect_net"> Network Disconnected </string>
+    <string name="fb_pro"> Turn on mobile data or Wi-Fi to access the Facebook profile. </string>
+    <string name="error_net"> Turn on mobile data or Wi-Fi to visit Icche Shop. </string>
+    <string name="email_dialog"> Turn on mobile data or Wi-Fi for e-mail. </string>
+    <string name="rudf_title">Icche Shop</string>
+    <string name="msg_feedback">Dear Developer,\n\n\n\n\n\n\n Best regards,</string>
+    <string name="feedbackMail">astanim.3221@gmail.com</string>
+    <string name="feedbacksub">Icche Shop Feedback</string>
+    <string name="feedTitle">Feedback</string>
+    <string name="cancel">Cancel</string>
+    <string name="retry_btn">Retry</string>
+
+
+    <string name="app_about_details">This Android app contains phone numbers, blood groups, batch and email addresses of students of Icche Shop, Anyone can find contacts of a person by searching or by navigating through the listings and can call or email him/her directly from this app. If any new or updated information is available, update notification will automatically be showed when the phone is connected to the Internet.\n\nPlease share your comments or suggestions to improve this app further.</string>
+    <string name="initiative_app">An Initiative by Icche Shop</string>
+    <string name="about_dev">Saklayen Ahmed\nDepartment of Accounting and Information Systems\nUniversity of Rajshshi.</string>
+    <string name="dev_email">Email\naisfamilyru@gmail.com</string>
+    <string name="dev_title">Developer</string>
+    <string name="welcome_to_ais_contact">Welcome to Icche Shop</string>
+    <string name="image_chooser">File Chooser</string>
+
+</resources>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "293690250993",
+    "firebase_url": "https://iccheshop-msg.firebaseio.com",
+    "project_id": "iccheshop-msg",
+    "storage_bucket": "iccheshop-msg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:293690250993:android:b4c853a5a9cccec3e57b50",
+        "android_client_info": {
+          "package_name": "com.icche.shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "293690250993-o2tbitnv4dn08jkkiqu3lko69m3v8qgi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuZ6IOF8jdVWfkLohc_AJXZVzHx73SD7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "293690250993-o2tbitnv4dn08jkkiqu3lko69m3v8qgi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notify_title">Icche Shop </string>
+    <string name="android_auto_update_dialog_title">Icche Shop (New update available) </string>
+    <string name="android_auto_update_notify_ticker"> Icche Shop new version update, click here to install </string>
+    <string name="android_auto_update_dialog_btn_download"> Update </string>
+    <string name="android_auto_update_toast_no_new_update"> No updates </string>
+    <string name="android_auto_update_download_progress"> Downloading %1$d%%</string>
+    <string name="android_auto_update_dialog_checking"> Looking for the new version ... </string>
+    <string name="android_auto_update_content"> Icche Shop DATABASE </string>
+</resources>
